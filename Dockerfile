@@ -3,7 +3,7 @@
 FROM golang:1.22
 
 # Set destination for COPY
-WORKDIR /eth-Parser
+WORKDIR /server-farm
 
 COPY . .
 
@@ -11,6 +11,6 @@ RUN go mod download
 
 RUN go build -o bin .
 
-EXPOSE 8180
+EXPOSE 8448
 
-ENTRYPOINT ["/eth-Parser/bin"]
+ENTRYPOINT ["/server-farm/bin"]
