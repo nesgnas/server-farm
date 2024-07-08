@@ -91,5 +91,8 @@ func main() {
 		ws(c, msgCh)
 	})
 
+	r.GET("/", func(c *gin.Context){
+		c.JSON(200, gin.H{"ping":"pong"})
+	})
 	r.Run(bindAddress)
 }
