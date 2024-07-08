@@ -1,15 +1,11 @@
 package main
 
 import (
-	"bufio"
 	"fmt"
-	"log"
-	"net/http"
-	"os"
-	"strings"
-
 	"github.com/gin-gonic/gin"
 	"github.com/gorilla/websocket"
+	"log"
+	"net/http"
 )
 
 var upgrader = websocket.Upgrader{
@@ -76,20 +72,20 @@ func main() {
 	// Create a channel for console messages
 	msgCh := make(chan string)
 
-	// Start a goroutine to read input from console
-	go func() {
-		reader := bufio.NewReader(os.Stdin)
-		for {
-			fmt.Print("Enter message: ")
-			text, err := reader.ReadString('\n')
-			if err != nil {
-				log.Println("Error reading from console:", err)
-				continue
-			}
-			text = strings.TrimSpace(text)
-			msgCh <- text
-		}
-	}()
+	//// Start a goroutine to read input from console
+	//go func() {
+	//	reader := bufio.NewReader(os.Stdin)
+	//	for {
+	//		fmt.Print("Enter message: ")
+	//		text, err := reader.ReadString('\n')
+	//		if err != nil {
+	//			log.Println("Error reading from console:", err)
+	//			continue
+	//		}
+	//		text = strings.TrimSpace(text)
+	//		msgCh <- text
+	//	}
+	//}()
 
 	r.GET("/ws", func(c *gin.Context) {
 		ws(c, msgCh)
