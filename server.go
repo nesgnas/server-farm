@@ -66,7 +66,7 @@ func ws(c *gin.Context, msgCh chan string) {
 func main() {
 	fmt.Println("Websocket Server!")
 
-	bindAddress := "localhost:8000"
+	
 	r := gin.Default()
 
 	// Create a channel for console messages
