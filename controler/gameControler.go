@@ -106,7 +106,7 @@ func Ws(c *gin.Context, msgCh chan string, method string) {
 
 // function sent inventory12.json in jsonData directory through websocket
 func SentJson(ws *websocket.Conn) error {
-	filePath := "./jsonData/inventory.json"
+	filePath := "jsonData/inventory12.json"
 
 	file, err := os.Open(filePath)
 	if err != nil {
@@ -118,6 +118,8 @@ func SentJson(ws *websocket.Conn) error {
 	if err != nil {
 		return err
 	}
+
+	log.Println(string(jsonData))
 
 	err = ws.WriteMessage(websocket.TextMessage, jsonData)
 	if err != nil {
