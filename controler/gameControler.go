@@ -69,7 +69,7 @@ func Ws(c *gin.Context, msgCh chan string, method string) {
 				// Process client message
 				switch string(message) {
 				case "Ping":
-					msgCh <- "pong"
+					msgCh <- "inside Inventory U"
 					break
 				case "GetInventory":
 					go func() {
