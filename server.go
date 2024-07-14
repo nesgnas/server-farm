@@ -3,71 +3,16 @@ package main
 import (
 	"fmt"
 	"github.com/gin-gonic/gin"
-	"github.com/gorilla/websocket"
-	"log"
-	"net/http"
+	"server-farm/controler"
+	"server-farm/router"
 )
-
-var upgrader = websocket.Upgrader{
-	// Solve cross-domain problems
-	CheckOrigin: func(r *http.Request) bool {
-		return true
-	},
-} // use default options
-
-func ws(c *gin.Context, msgCh chan string) {
-	// Upgrade get request to WebSocket protocol
-	ws, err := upgrader.Upgrade(c.Writer, c.Request, nil)
-	if err != nil {
-		log.Print("upgrade:", err)
-		return
-	}
-	defer ws.Close()
-
-	go func() {
-		for {
-			// Read data from ws
-			_, message, err := ws.ReadMessage()
-			if err != nil {
-				log.Println("read:", err)
-				break
-			}
-			log.Printf("recv: %s", message)
-
-			// Process client message
-			switch string(message) {
-			case "Ping":
-				msgCh <- "pong"
-				break
-			default:
-				msgCh <- string(message)
-			}
-
-			//// Echo message back to client
-			//err = ws.WriteMessage(mt, message)
-			//if err != nil {
-			//	log.Println("write:", err)
-			//	break
-			//}
-		}
-	}()
-
-	for {
-		select {
-		case msg := <-msgCh:
-			err := ws.WriteMessage(websocket.TextMessage, []byte(msg))
-			if err != nil {
-				log.Println("write:", err)
-				return
-			}
-		}
-	}
-}
 
 func main() {
 	fmt.Println("Websocket Server!")
 
 	r := gin.Default()
+
+	router.WebSocket(r)
 
 	// Create a channel for console messages
 	msgCh := make(chan string)
@@ -88,7 +33,7 @@ func main() {
 	//}()
 
 	r.GET("/ws", func(c *gin.Context) {
-		ws(c, msgCh)
+		controler.Ws(c, msgCh, "")
 	})
 
 	r.GET("/", func(c *gin.Context) {

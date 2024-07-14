@@ -1,0 +1,21 @@
+{
+  "id": "daslkdja",
+  "slot": 12,
+  "used": 10,
+  "empty": 2,
+  "item": [
+    {
+      "id": "2sakdhaj",
+      "name": "phan bon",
+      "rank": "S",
+      "quantity": 123
+    },
+    {
+      "id": "2sadhaj",
+      "name": "phan nguoi",
+      "rank": "D",
+      "quantity": 13
+    }
+
+  ]
+}
