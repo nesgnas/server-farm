@@ -11,6 +11,6 @@ RUN go mod download
 
 RUN go build -o bin .
 
-EXPOSE 8448
+EXPOSE 8000
 
 ENTRYPOINT ["/server-farm/bin"]
