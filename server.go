@@ -27,7 +27,7 @@ func ws(c *gin.Context, msgCh chan string) {
 	go func() {
 		for {
 			// Read data from ws
-			mt, message, err := ws.ReadMessage()
+			_, message, err := ws.ReadMessage()
 			if err != nil {
 				log.Println("read:", err)
 				break
@@ -38,16 +38,17 @@ func ws(c *gin.Context, msgCh chan string) {
 			switch string(message) {
 			case "Ping":
 				msgCh <- "pong"
+				break
 			default:
-				msgCh <- "Unknown command"
+				msgCh <- string(message)
 			}
 
-			// Echo message back to client
-			err = ws.WriteMessage(mt, message)
-			if err != nil {
-				log.Println("write:", err)
-				break
-			}
+			//// Echo message back to client
+			//err = ws.WriteMessage(mt, message)
+			//if err != nil {
+			//	log.Println("write:", err)
+			//	break
+			//}
 		}
 	}()
 
@@ -66,7 +67,6 @@ func ws(c *gin.Context, msgCh chan string) {
 func main() {
 	fmt.Println("Websocket Server!")
 
-	bindAddress := "localhost:8448"
 	r := gin.Default()
 
 	// Create a channel for console messages
@@ -91,5 +91,8 @@ func main() {
 		ws(c, msgCh)
 	})
 
-	r.Run(bindAddress)
+	r.GET("/", func(c *gin.Context) {
+		c.JSON(200, gin.H{"ping": "pong"})
+	})
+	r.Run(":8000")
 }
